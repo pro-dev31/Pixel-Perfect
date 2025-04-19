@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amazon Clone</title>
+  <!-- Add Amazon Ember Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Update the existing style block -->
+  <style>
+    @font-face {
+      font-family: "Amazon Ember";
+      src: url("https://m.media-amazon.com/images/S/sash/KFPk-9IF4FqAp5v.woff2") format("woff2"),
+        url("https://m.media-amazon.com/images/S/sash/CHrKxX9e9bTtUE-.woff") format("woff");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Amazon Ember", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Update specific text styles */
+    .account,
+    .orders {
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+    .account b,
+    .orders b {
+      font-size: 14px;
+      line-height: 15px;
+    }
+
+    nav {
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .card h3 {
+      font-size: 21px;
+      line-height: 27.3px;
+      font-weight: 700;
+    }
+
+    .card p {
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    /* Price text */
+    .price {
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 400;
+    }
+
+    /* Deal text */
+    .deal-text {
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 700;
+      color: #CC0C39;
+    }
+
+    /* Footer links */
+    footer a {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+    }
+
+    footer h4 {
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 700;
+    }
+
+    body {
+      background-color: #e3e6e6;
+    }
+
+    header {
+      background-color: #131921;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #f08804;
+      margin-right: 20px;
+    }
+
+    .location,
+    .language,
+    .account,
+    .orders,
+    .cart {
+      margin: 5px 10px;
+      font-size: 14px;
+    }
+
+    .search-bar {
+      display: flex;
+      flex: 1;
+      max-width: 800px;
+      margin: 5px 10px;
+      border-radius: 100px;
+    }
+
+    .search-bar select,
+    .search-bar input,
+    .search-bar button {
+      padding: 8px;
+      border: none;
+    }
+
+    .search-bar select {
+      background-color: #ddd;
+    }
+
+    .search-bar input {
+      flex: 1;
+    }
+
+    .search-bar button {
+      background-color: #febd69;
+      cursor: pointer;
+    }
+
+    nav {
+      background-color: #232f3e;
+      color: white;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 10px 20px;
+      font-size: 14px;
+      gap: 15px;
+    }
+
+    .hero {
+      background: url('https://m.media-amazon.com/images/G/01/AmazonExports/Fuji/2023/March/Easter_Fuji_TallHero_2x_EN._CB591082724_.jpg') no-repeat center;
+      background-size: cover;
+      height: 300px;
+      position: relative;
+    }
+
+    .notice-bar {
+      background-color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: white;
+      padding: 15px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .card .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .search-bar {
+        width: 100%;
+      }
+
+      nav {
+        font-size: 12px;
+      }
+
+      .hero {
+        height: 200px;
+        background-size: cover;
+      }
+    }
+  </style>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <header style="flex-direction: row;">
+    <!-- <div class="logo">amazon</div> -->
+    <img width="100" height="30"
+      src="data:image/png;base64,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"
+      alt="Description of image">
+
+      <div style="display: flex; align-items: center; background-color: #131921; color: white; padding: 8px 12px; font-family: Arial, sans-serif; width: fit-content;margin-left: 10px;">
+        <img height="20px" width="20px" style="margin-right: 8px;" src="https://www.citypng.com/public/uploads/preview/transparent-address-location-map-white-icon-symbol-7017516949747105tmb8ibsbd.png?v=2025041415" alt="Location Icon">
+        <div style="display: flex; flex-direction: column; line-height: 1.2;">
+          <div style="font-size: 13px; color: #ccc;">Delivering to Durg 491001</div>
+          <div style="font-size: 14px; font-weight: bold; color: white;">Update location</div>
+        </div>
+      </div>
+      
+<!-- 
+    <div class="search-bar" style="border-radius: 10px;">
+      <select>
+        <option>All</option>
+        <option>Electronics</option>
+        <option>Books</option>
+      </select>
+      <input type="text" placeholder="Search Amazon" />
+      <button>🔍</button>
+    </div> -->
+    <div style="display: flex; border-radius: 5px; overflow: hidden; height: 40px; width: 800px; font-family: Arial, sans-serif;">
+      <!-- Dropdown -->
+      <select style="border: none; background-color: #e6e6e6; padding: 0 10px; font-size: 14px; color: #111; outline: none;">
+        <option>All</option>
+        <option>Electronics</option>
+        <option>Books</option>
+      </select>
+    
+      <!-- Input -->
+      <input type="text" placeholder="Search Amazon.in"
+        style="flex: 1; border: none; padding: 0 10px; font-size: 14px; outline: none;" />
+    
+      <!-- Search Button -->
+      <button style="background-color: #f3a847; border: none; width: 45px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/search--v1.png" alt="search" style="width: 18px; height: 18px;" />
+      </button>
+    </div>
+    
+    <div class="language">🌐 EN</div>
+    <div class="account">Hello, sign in<br><b>Account & Lists</b></div>
+    <div class="orders">Returns<br><b>& Orders</b></div>
+    <div class="cart">
+       <img height="30px" width="30px" style="margin-right: 8px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1jaiOHWfJECIsxUUtvXBSc2ON-chJtzWhZg&s" alt="cart Icon">
+      Cart</div>
+  </header>
+
+  <nav>
+    <div>☰ All</div>
+    <div>Today's Deals</div>
+    <div>Prime Video</div>
+    <div>Registry</div>
+    <div>Gift Cards</div>
+    <div>Customer Service</div>
+    <div>Sell</div>
+    <div>MX Player</div>
+    <div>Sell</div>
+    <div>Bestsellers</div>
+    <div>Customer Service</div>
+    <div>New Releases</div>
+    <div>Fashion</div>
+    <div>Electronics</div>
+    <div>Amazon Pay</div>
+    <div>Cricket</div>
+    <div>Medical</div>
+    <div>Art & Craft</div>
+
+  </nav>
+
+  <div class="main-container-box" style="background-color: #ecedee;">
+
+    <div style="position: relative; width: 100%; max-width: 100%; overflow: hidden; height: 350px; background: #ddd;">
+      <!-- Carousel Track -->
+      <div id="carousel-track" style="display: flex; transition: transform 0.5s ease; height: 100%;">
+
+        <!-- Slide 1 -->
+        <div style="min-width: 100%; height: 100%;">
+          <img src="https://m.media-amazon.com/images/I/61AHiYyu3ZL._SX3000_.jpg"
+            style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+        <!-- Slide 2 -->
+        <div style="min-width: 100%; height: 100%;">
+          <img
+            src="https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-an-echo-echo-dot-next-to-a-camera-image_2973287.jpg"
+            style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+        <!-- Slide 3 -->
+        <div style="min-width: 100%; height: 100%;">
+          <img
+            src="https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-an-echo-echo-dot-next-to-a-camera-image_2973287.jpg"
+            style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+      </div>
+
+      <!-- Left Arrow -->
+      <div onclick="moveSlide(-1)"
+        style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(255,255,255,0.8); border-radius: 50%; padding: 10px; cursor: pointer; font-size: 24px;">
+        &#10094;
+      </div>
+
+      <!-- Right Arrow -->
+      <div onclick="moveSlide(1)"
+        style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(255,255,255,0.8); border-radius: 50%; padding: 10px; cursor: pointer; font-size: 24px;">
+        &#10095;
+      </div>
+    </div>
+
+    <!-- <div id="carouselExample" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-an-echo-echo-dot-next-to-a-camera-image_2973287.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-an-echo-echo-dot-next-to-a-camera-image_2973287.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-an-echo-echo-dot-next-to-a-camera-image_2973287.jpg" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div> -->
+
+    <!-- Category Cards Grid -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+
+      <!-- Vacation Getaway -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Vacation getaway</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Handbags</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Swimwear</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Skincare</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Sandals</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Shop More</a>
+      </div>
+
+      <!-- Most-loved Watches -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Most-loved watches</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Women</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Men</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Girls</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Boys</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Discover more</a>
+      </div>
+
+      <!-- Beauty Routine -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Level up your beauty routine</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Makeup</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Brushes</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Sponges</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Mirrors</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">See more</a>
+      </div>
+
+      <!-- Beauty Discovery -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;;">Discover these beauty products for you</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Skincare</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Makeup</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Nails</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Fragrances</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Explore all in Beauty</a>
+      </div>
+
+    </div>
+
+     <!-- Category Cards Grid -->
+     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+
+      <!-- Vacation Getaway -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Vacation getaway</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Handbags</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Swimwear</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Skincare</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Sandals</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Shop More</a>
+      </div>
+
+      <!-- Most-loved Watches -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Most-loved watches</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Women</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Men</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Girls</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Boys</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Discover more</a>
+      </div>
+
+      <!-- Beauty Routine -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Level up your beauty routine</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Makeup</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Brushes</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Sponges</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Mirrors</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">See more</a>
+      </div>
+
+      <!-- Beauty Discovery -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;;">Discover these beauty products for you</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Skincare</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Makeup</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Nails</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Fragrances</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Explore all in Beauty</a>
+      </div>
+
+    </div>
+
+    <div
+      style="background-color: white; margin: 40px auto; padding: 20px; border-radius: 4px;border-width: 3; border-color: #131921;">
+      <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;">
+        <div style="font-size: 20px; font-weight: bold;">
+          Starting ₹70,348 | Two wheels, feel the freedom
+        </div>
+        <a href="#" style="color: #007185; font-size: 14px; text-decoration: none; margin-left: 20px;">See all
+          offers</a>
+      </div>
+
+      <!-- Carousel container -->
+      <div style="position: relative; overflow: hidden;">
+        <!-- Left arrow -->
+        <button onclick="scrollCarousel(-1)"
+          style="position: absolute; left: 0; top: 40%; z-index: 1; background-color: white; border: none; font-size: 24px; padding: 10px; cursor: pointer;">❮</button>
+
+        <!-- Images wrapper -->
+        <div id="carousel" style="display: flex; overflow-x: auto; scroll-behavior: smooth;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc6iaCUioRNmmNPFcyS4bZwOoBAMJNSv0YfA&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+        </div>
+
+        <!-- Right arrow -->
+        <button onclick="scrollCarousel(1)"
+          style="position: absolute; right: 0; top: 40%; z-index: 1; background-color: white; border: none; font-size: 24px; padding: 10px; cursor: pointer;">❯</button>
+      </div>
+    </div>
+
+    <!-- <section class="hero"></section> -->
+
+
+    <div style="background-color: white; margin: 40px auto; padding: 20px; max-width: 100%; overflow: hidden;">
+      <div style="display: flex; overflow-x: auto; gap: 16px; scroll-behavior: smooth; padding-bottom: 10px;">
+
+        <!-- Card 1 -->
+        <div style="min-width: 220px; background-color: #fff; border: 1px solid #ddd; padding: 16px; flex-shrink: 0;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Up to 50% off | International brands
+          </div>
+          <img
+            src="https://images-eu.ssl-images-amazon.com/images/G/31/img19/OOC/Gateway/2025/WK_1/PC_CC_379x304._SY304_CB546213557_.jpg"
+            style="width: 400px; height: auto; margin-bottom: 8px;">
+          <a href="#" style="font-size: 14px; color: #007185; text-decoration: none;">See all offers</a>
+        </div>
+
+        <!-- Card 2 -->
+        <div style="min-width: 220px; background-color: #fff; border: 1px solid #ddd; padding: 16px; flex-shrink: 0;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Next-Gen tech for everyday living | Shop
+            Now</div>
+          <img
+            src="https://images-eu.ssl-images-amazon.com/images/G/31/Symbol/2025/GW/QC/wk11/desktop_-_low_res._SY304_CB549428167_.jpg"
+            style="width: 400px; height: auto; margin-bottom: 4px;">
+          <img src="https://m.media-amazon.com/images/I/71OJzVDrEIL._AC_UL320_.jpg"
+            style="width: 100%; height: auto; margin-bottom: 8px;">
+          <a href="#" style="font-size: 14px; color: #007185; text-decoration: none;">See all offers</a>
+        </div>
+
+        <!-- Card 3 -->
+        <div style="min-width: 220px; background-color: #fff; border: 1px solid #ddd; padding: 16px; flex-shrink: 0;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Under ₹799 | Combo packs from Amazon
+            brands</div>
+          <img src="https://m.media-amazon.com/images/I/712ZgHThQEL._AC_SY170_.jpg"
+            style="width: 400px; height: auto; margin-bottom: 8px;">
+          <a href="#" style="font-size: 14px; color: #007185; text-decoration: none;">See all offers</a>
+        </div>
+
+        <!-- Card 4 -->
+        <div style="min-width: 220px; background-color: #fff; border: 1px solid #ddd; padding: 16px; flex-shrink: 0;">
+          <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px;">Under ₹799 | Combo packs from Amazon
+            brands</div>
+          <img
+            src="https://thumbs.dreamstime.com/b/outdoor-heat-pump-technology-compressor-unit-air-conditioner-mini-split-ac-condition-system-isolated-white-background-157143094.jpg"
+            style="width: 400px; height: auto; margin-bottom: 8px;">
+          <a href="#" style="font-size: 14px; color: #007185; text-decoration: none;">See all offers</a>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div style="padding: 20px; max-width: 100%; overflow-x: hidden;">
+      <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+        Amazon LIVE - Watch, Chat & Shop LIVE
+        <a href="#"
+          style="font-size: 14px; font-weight: normal; color: #007185; margin-left: 10px; text-decoration: none;">See
+          more from Amazon Live</a>
+      </div>
+
+      <div style="display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 12px;">
+
+        <!-- Video Player -->
+        <div
+          style="min-width: 320px; height: auto; position: relative; background-color: #000; flex-shrink: 0; border: 1px solid #ddd;">
+          <img src="https://m.media-amazon.com/images/I/711rU5UBT+L._AC_UL320_.jpg" alt="Amazon Live Video"
+            style="width: 100%; height: auto;">
+          <span
+            style="position: absolute; top: 8px; left: 8px; background-color: #555; color: #fff; font-size: 12px; padding: 4px 6px; border-radius: 4px;">Previously
+            Live</span>
+          <span
+            style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0,0,0,0.7); color: #fff; padding: 8px 12px; border-radius: 6px; font-weight: bold;">▶
+            Watch now</span>
+          <div style="position: absolute; bottom: 8px; left: 12px; color: white; font-size: 12px;">
+            <a href="#" style="color: #fff; text-decoration: none;">Ricky karkera</a> <span style="opacity: 0.8;">Earns
+              commissions</span>
+          </div>
+        </div>
+
+        <!-- Product Cards -->
+        <!-- Repeat as needed -->
+        <div
+          style="min-width: 160px; background-color: #fff; border: 1px solid #ddd; padding: 10px; text-align: center; flex-shrink: 0;">
+          <img
+            src="https://www.jiomart.com/images/product/original/rvbxy0lygh/dennis-lingo-men-s-slim-fit-cotton-checkered-full-sleeves-casual-shirt-b-green-product-images-rvbxy0lygh-1-202212091544.jpg?im=Resize=(500,630)"
+            style="width: 100%; height: 250px;">
+          <div style="font-size: 12px; margin: 6px 0;">London Hills Men Jeans || Relaxed Pants</div>
+          <div style="color: #b12704; font-size: 12px;"><strong>70% off</strong> | Limited time deal</div>
+          <div style="font-weight: bold;">₹599.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹1,999.00</div>
+        </div>
+
+        <div
+          style="min-width: 160px; background-color: #fff; border: 1px solid #ddd; padding: 10px; text-align: center; flex-shrink: 0;">
+          <img
+            src="https://www.jiomart.com/images/product/original/rvbxy0lygh/dennis-lingo-men-s-slim-fit-cotton-checkered-full-sleeves-casual-shirt-b-green-product-images-rvbxy0lygh-1-202212091544.jpg?im=Resize=(500,630)"
+            style="width: 100%; height: 250px;">
+          <div style="font-size: 12px; margin: 6px 0;">GRECIILOOKS Baggy Fit Jeans</div>
+          <div style="color: #b12704; font-size: 12px;"><strong>65% off</strong> | Limited time deal</div>
+          <div style="font-weight: bold;">₹699.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹1,999.00</div>
+        </div>
+
+        <div
+          style="min-width: 160px; background-color: #fff; border: 1px solid #ddd; padding: 10px; text-align: center; flex-shrink: 0;">
+          <img
+            src="https://www.jiomart.com/images/product/original/rvbxy0lygh/dennis-lingo-men-s-slim-fit-cotton-checkered-full-sleeves-casual-shirt-b-green-product-images-rvbxy0lygh-1-202212091544.jpg?im=Resize=(500,630)"
+            style="width: 100%; height: 250px;">
+          <div style="font-size: 12px; margin: 6px 0;">London Hills Men Jeans || Relaxed Pants</div>
+          <div style="color: #b12704; font-size: 12px;"><strong>70% off</strong> | Limited time deal</div>
+          <div style="font-weight: bold;">₹599.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹1,999.00</div>
+        </div>
+
+        <div
+          style="min-width: 160px; background-color: #fff; border: 1px solid #ddd; padding: 10px; text-align: center; flex-shrink: 0;">
+          <img
+            src="https://www.jiomart.com/images/product/original/rvbxy0lygh/dennis-lingo-men-s-slim-fit-cotton-checkered-full-sleeves-casual-shirt-b-green-product-images-rvbxy0lygh-1-202212091544.jpg?im=Resize=(500,630)"
+            style="width: 100%; height: 250px;">
+          <div style="font-size: 12px; margin: 6px 0;">GRECIILOOKS Bootcut Jeans</div>
+          <div style="color: #b12704; font-size: 12px;"><strong>65% off</strong> | Limited time deal</div>
+          <div style="font-weight: bold;">₹699.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹1,999.00</div>
+        </div>
+
+        <div
+          style="min-width: 160px; background-color: #fff; border: 1px solid #ddd; padding: 10px; text-align: center; flex-shrink: 0;">
+          <img
+            src="https://www.jiomart.com/images/product/original/rvbxy0lygh/dennis-lingo-men-s-slim-fit-cotton-checkered-full-sleeves-casual-shirt-b-green-product-images-rvbxy0lygh-1-202212091544.jpg?im=Resize=(500,630)"
+            style="width: 100%; height: 250px;">
+          <div style="font-size: 12px; margin: 6px 0;">DOMIN8 Sleeveless Gym Vest</div>
+          <div style="color: #b12704; font-size: 12px;"><strong>Limited deal</strong></div>
+          <div style="font-weight: bold;">₹584.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹999.00</div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <!-- ✅ Amazon Style Best Sellers + Categories Section -->
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #fff;">
+
+      <!-- Best Sellers Banner -->
+      <h2 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Best Sellers in Computers & Accessories</h2>
+      <div style="display: flex; overflow-x: auto; gap: 20px; padding: 10px 0;">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbEkZHonygfe8BcyJhqj7wMcSf7mnEcSQNog&s"
+          style="height: 120px;" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDwOC6_XLG0gr4PCKqb1CzYd1SzD6yb39CkA&s"
+          style="height: 120px;" />
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbfEBNNk7Xhti9aJiqOWomBF5s5MiAWCzEh0ciZ06RvuVEarluZteQsLTA19xXWW6gE0w&usqp=CAU"
+          style="height: 120px;" />
+        <img
+          src="https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/page/landing-page/qualcomm-landing-page/notebook-inspiron-7441-t-ice-blue-gallery-1.png?fmt=png-alpha&wid=2261&hei=1700"
+          style="height: 120px;" />
+        <img src="https://saudewala.in/cdn/shop/collections/Laptop.jpg?v=1732216115&width=1296"
+          style="height: 120px;" />
+        <img src="https://www.techtarget.com/rms/onlineimages/hp_elitebook_mobile.jpg" style="height: 120px;" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbEkZHonygfe8BcyJhqj7wMcSf7mnEcSQNog&s"
+          style="height: 120px;" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDwOC6_XLG0gr4PCKqb1CzYd1SzD6yb39CkA&s"
+          style="height: 120px;" />
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbfEBNNk7Xhti9aJiqOWomBF5s5MiAWCzEh0ciZ06RvuVEarluZteQsLTA19xXWW6gE0w&usqp=CAU"
+          style="height: 120px;" />
+        <img
+          src="https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/page/landing-page/qualcomm-landing-page/notebook-inspiron-7441-t-ice-blue-gallery-1.png?fmt=png-alpha&wid=2261&hei=1700"
+          style="height: 120px;" />
+        <img src="https://saudewala.in/cdn/shop/collections/Laptop.jpg?v=1732216115&width=1296"
+          style="height: 120px;" />
+        <img src="https://www.techtarget.com/rms/onlineimages/hp_elitebook_mobile.jpg" style="height: 120px;" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbEkZHonygfe8BcyJhqj7wMcSf7mnEcSQNog&s"
+          style="height: 120px;" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDwOC6_XLG0gr4PCKqb1CzYd1SzD6yb39CkA&s"
+          style="height: 120px;" />
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbfEBNNk7Xhti9aJiqOWomBF5s5MiAWCzEh0ciZ06RvuVEarluZteQsLTA19xXWW6gE0w&usqp=CAU"
+          style="height: 120px;" />
+        <img
+          src="https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/page/landing-page/qualcomm-landing-page/notebook-inspiron-7441-t-ice-blue-gallery-1.png?fmt=png-alpha&wid=2261&hei=1700"
+          style="height: 120px;" />
+        <img src="https://saudewala.in/cdn/shop/collections/Laptop.jpg?v=1732216115&width=1296"
+          style="height: 120px;" />
+        <img src="https://www.techtarget.com/rms/onlineimages/hp_elitebook_mobile.jpg" style="height: 120px;" />
+      </div>
+
+     <!-- Category Cards Grid -->
+     <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+
+      <!-- Vacation Getaway -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Vacation getaway</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Handbags</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Swimwear</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Skincare</p>
+          </div>
+          <div>
+            <img src="https://m.media-amazon.com/images/I/71f3BmjCwtL.jpg" style="width: 100%;" />
+            <p style="font-size: 13px;">Sandals</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Shop More</a>
+      </div>
+
+      <!-- Most-loved Watches -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Most-loved watches</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Women</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Men</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Girls</p>
+          </div>
+          <div>
+            <img src="https://images-cdn.ubuy.co.in/667b5e1230e3b21dad07f8eb-olevs-watches-for-men-mens-stainless.jpg"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Boys</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Discover more</a>
+      </div>
+
+      <!-- Beauty Routine -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Level up your beauty routine</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Makeup</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Brushes</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Sponges</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAJqlEP_mkacgWRVvepR-qm-6DU6waXDc8vw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Mirrors</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">See more</a>
+      </div>
+
+      <!-- Beauty Discovery -->
+      <div style="flex: 1; min-width: 220px; background: #ffffff; padding: 15px;">
+        <h3 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;;">Discover these beauty products for you</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Skincare</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Makeup</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Nails</p>
+          </div>
+          <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWaztKhnUL-oAZDrSOFp0ezol_Dsg7KRWKw&s"
+              style="width: 100%;" />
+            <p style="font-size: 13px;">Fragrances</p>
+          </div>
+        </div>
+        <a href="#" style="font-size: 13px; color: #007185;">Explore all in Beauty</a>
+      </div>
+
+    </div>
+    </div>
+
+    <div
+      style="background-color: white; margin: 40px auto; padding: 20px; border-radius: 4px;border-width: 3; border-color: #131921;">
+      <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;">
+        <div style="font-size: 20px; font-weight: bold;">
+          Starting ₹70,348 | Two wheels, feel the freedom
+        </div>
+        <a href="#" style="color: #007185; font-size: 14px; text-decoration: none; margin-left: 20px;">See all
+          offers</a>
+      </div>
+
+      <!-- Carousel container -->
+      <div style="position: relative; overflow: hidden;">
+        <!-- Left arrow -->
+        <button onclick="scrollCarousel(-1)"
+          style="position: absolute; left: 0; top: 40%; z-index: 1; background-color: white; border: none; font-size: 24px; padding: 10px; cursor: pointer;">❮</button>
+
+        <!-- Images wrapper -->
+        <div id="carousel" style="display: flex; overflow-x: auto; scroll-behavior: smooth;">
+          <img
+            src="https://5.imimg.com/data5/UI/DT/NY/SELLER-33442967/new-product-17-07-2020-1594973714-6254--500x500.jpeg"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img
+            src="https://5.imimg.com/data5/PO/NK/BP/ANDROID-102939719/prod-20200318-13514820139432091327502-jpg-250x250.jpg"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpavZNHI7qFsJeSaXqgd-Ta8BH2KSdrC3bSQ&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCDKZUITzgdenxZu0Wai2JbpRN3rzshARQufBR5W5Y0A0K9Sol5xAKZ08c8Z2dE-vdJ9E&usqp=CAU"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgMBadWTGQl1H52UjirHyL8rhVP0mKTHiHfw&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img
+            src="https://5.imimg.com/data5/UI/DT/NY/SELLER-33442967/new-product-17-07-2020-1594973714-6254--500x500.jpeg"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img
+            src="https://5.imimg.com/data5/PO/NK/BP/ANDROID-102939719/prod-20200318-13514820139432091327502-jpg-250x250.jpg"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpavZNHI7qFsJeSaXqgd-Ta8BH2KSdrC3bSQ&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCDKZUITzgdenxZu0Wai2JbpRN3rzshARQufBR5W5Y0A0K9Sol5xAKZ08c8Z2dE-vdJ9E&usqp=CAU"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgMBadWTGQl1H52UjirHyL8rhVP0mKTHiHfw&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img
+            src="https://5.imimg.com/data5/UI/DT/NY/SELLER-33442967/new-product-17-07-2020-1594973714-6254--500x500.jpeg"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img
+            src="https://5.imimg.com/data5/PO/NK/BP/ANDROID-102939719/prod-20200318-13514820139432091327502-jpg-250x250.jpg"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpavZNHI7qFsJeSaXqgd-Ta8BH2KSdrC3bSQ&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCDKZUITzgdenxZu0Wai2JbpRN3rzshARQufBR5W5Y0A0K9Sol5xAKZ08c8Z2dE-vdJ9E&usqp=CAU"
+            style="width: 220px; height: auto; margin-right: 20px;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgMBadWTGQl1H52UjirHyL8rhVP0mKTHiHfw&s"
+            style="width: 220px; height: auto; margin-right: 20px;">
+        </div>
+
+        <!-- Right arrow -->
+        <button onclick="scrollCarousel(1)"
+          style="position: absolute; right: 0; top: 40%; z-index: 1; background-color: white; border: none; font-size: 24px; padding: 10px; cursor: pointer;">❯</button>
+      </div>
+    </div>
+
+    <div style="padding: 20px; max-width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h2 style="font-size: 21px; margin-bottom: 10px;font-family: Arial, Helvetica, sans-serif; font-weight: bold;">Inspired by your browsing history</h2>
+        <span style="font-size: 14px; color: #555;">Page 1 of 7</span>
+      </div>
+
+      <div style="display: flex; gap: 12px; align-items: stretch; overflow-x: auto; padding-bottom: 10px;">
+
+        <!-- Left Arrow -->
+        <div
+          style="display: flex; align-items: center; justify-content: center; min-width: 32px; cursor: pointer; border: 1px solid #ddd; border-radius: 4px;">
+          &#8592;
+        </div>
+
+        <!-- Product Card -->
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/61agLg2F7aL._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">GITGRNTH 3D Crystal Ball...</div>
+          <div style="color: #b12704; font-size: 12px; font-weight: bold;">72% off</div>
+          <div style="color: red; font-size: 12px;">Limited time deal</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹282.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹999.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/71NXJOUdoYL._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">TEKCOOL Inline Skates...</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹1,299.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/71b5JIJxDfL._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">Smartivity Earth-Sun-Moon Model</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹990.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/51Oq79-eK-L._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">One94Store 3D Galaxy Crystal Lamp</div>
+          <div style="color: #b12704; font-size: 12px; font-weight: bold;">80% off</div>
+          <div style="color: red; font-size: 12px;">Limited time deal</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹199.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹999.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/516Z1qQs10L._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">Dove Exfoliate Serum Bar</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹150.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/615Cb02PM7L._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">NYRWANA Space Whale Mug</div>
+          <div style="color: #b12704; font-size: 12px; font-weight: bold;">9% off</div>
+          <div style="color: red; font-size: 12px;">Limited time deal</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹548.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹599.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/51pdwNbBDML._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">Street27 Astronaut Figures (3Pcs)</div>
+          <div style="color: #b12704; font-size: 12px; font-weight: bold;">83% off</div>
+          <div style="color: red; font-size: 12px;">Limited time deal</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹498.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹2,999.00</div>
+        </div>
+
+        <!-- Product Card -->
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/61agLg2F7aL._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">GITGRNTH 3D Crystal Ball...</div>
+          <div style="color: #b12704; font-size: 12px; font-weight: bold;">72% off</div>
+          <div style="color: red; font-size: 12px;">Limited time deal</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹282.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹999.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/71NXJOUdoYL._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">TEKCOOL Inline Skates...</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹1,299.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/71b5JIJxDfL._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">Smartivity Earth-Sun-Moon Model</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹990.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/51Oq79-eK-L._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">One94Store 3D Galaxy Crystal Lamp</div>
+          <div style="color: #b12704; font-size: 12px; font-weight: bold;">80% off</div>
+          <div style="color: red; font-size: 12px;">Limited time deal</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹199.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹999.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/516Z1qQs10L._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">Dove Exfoliate Serum Bar</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹150.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/615Cb02PM7L._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">NYRWANA Space Whale Mug</div>
+          <div style="color: #b12704; font-size: 12px; font-weight: bold;">9% off</div>
+          <div style="color: red; font-size: 12px;">Limited time deal</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹548.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹599.00</div>
+        </div>
+
+        <div
+          style="min-width: 180px; border: 1px solid #ddd; padding: 10px; text-align: center; background-color: #fff;">
+          <img src="https://images-eu.ssl-images-amazon.com/images/I/51pdwNbBDML._AC_UL165_SR165,165_.jpg"
+            style="width: 100%; height: auto;">
+          <div style="font-size: 13px; margin-top: 6px;">Street27 Astronaut Figures (3Pcs)</div>
+          <div style="color: #b12704; font-size: 12px; font-weight: bold;">83% off</div>
+          <div style="color: red; font-size: 12px;">Limited time deal</div>
+          <div style="font-weight: bold; margin-top: 4px;">₹498.00</div>
+          <div style="text-decoration: line-through; color: #888; font-size: 12px;">₹2,999.00</div>
+        </div>
+
+
+        <!-- Right Arrow -->
+        <div
+          style="display: flex; align-items: center; justify-content: center; min-width: 32px; cursor: pointer; border: 1px solid #ddd; border-radius: 4px;">
+          &#8594;
+        </div>
+
+      </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; text-align: center; border-radius: 5px;">
+      <h2 style="margin-bottom: 20px; font-weight: bold;">See personalized recommendations</h2>
+
+      <a href="#"
+        style="background-color: #ffd814; padding: 10px 40px; border-radius: 30px; text-decoration: none; color: black; font-weight: bold; display: inline-block; margin-bottom: 10px;">
+        Sign in
+      </a>
+
+      <div style="margin-top: 5px;">
+        <span>New customer? </span>
+        <a href="#" style="color: #007185; text-decoration: none;">Start here.</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <div id="backToTop"
+    style="position: fixed; bottom: 20px; right: 20px; background: #37475A; color: white; padding: 15px; border-radius: 3px; cursor: pointer; display: none;">
+    Back to top
+  </div>
+
+
+
+  <!-- ✅ Amazon Style Footer -->
+  <footer style="background-color: #232F3E; color: white; font-family: Arial, sans-serif; margin-top: 40px;">
+    <div style="background-color: #37475A; text-align: center; padding: 15px; font-size: 14px; cursor: pointer;">
+      Back to top
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-around; padding: 40px 20px;">
+      <div>
+        <h4 style="font-size: 16px; margin-bottom: 10px;">Get to Know Us</h4>
+        <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 28px;">
+          <li>Careers</li>
+          <li>Blog</li>
+          <li>About Amazon</li>
+          <li>Investor Relations</li>
+          <li>Amazon Devices</li>
+          <li>Amazon Science</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="font-size: 16px; margin-bottom: 10px;">Make Money with Us</h4>
+        <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 28px;">
+          <li>Sell products on Amazon</li>
+          <li>Sell on Amazon Business</li>
+          <li>Sell apps on Amazon</li>
+          <li>Become an Affiliate</li>
+          <li>Advertise Your Products</li>
+          <li>Self-Publish with Us</li>
+          <li>Host an Amazon Hub</li>
+          <li>&rsaquo; See More Make Money with Us</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="font-size: 16px; margin-bottom: 10px;">Amazon Payment Products</h4>
+        <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 28px;">
+          <li>Amazon Business Card</li>
+          <li>Shop with Points</li>
+          <li>Reload Your Balance</li>
+          <li>Amazon Currency Converter</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="font-size: 16px; margin-bottom: 10px;">Let Us Help You</h4>
+        <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 28px;">
+          <li>Amazon and COVID-19</li>
+          <li>Your Account</li>
+          <li>Your Orders</li>
+          <li>Shipping Rates & Policies</li>
+          <li>Returns & Replacements</li>
+          <li>Manage Your Content and Devices</li>
+          <li>Help</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="border-top: 1px solid #3a4553; padding: 20px 0; text-align: center;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"
+        style="width: 100px; margin-bottom: 10px;">
+      <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <button
+          style="background: #232F3E; color: white; border: 1px solid #848688; padding: 6px 12px; border-radius: 3px;">🌐
+          English</button>
+        <button
+          style="background: #232F3E; color: white; border: 1px solid #848688; padding: 6px 12px; border-radius: 3px;">💲
+          USD - U.S. Dollar</button>
+        <button
+          style="background: #232F3E; color: white; border: 1px solid #848688; padding: 6px 12px; border-radius: 3px;">🇺🇸
+          United States</button>
+      </div>
+    </div>
+  </footer>
+  <!-- ✅ Amazon Services Links Section -->
+  <div style="background-color: #131A22; color: white; padding: 40px 20px; font-family: Arial, sans-serif;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; max-width: 1200px; margin: auto;">
+      <!-- Column Template -->
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Amazon Music</p>
+        <p style="font-size: 13px;">Stream millions of songs</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Amazon Ads</p>
+        <p style="font-size: 13px;">Reach customers wherever they spend their time</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">6pm</p>
+        <p style="font-size: 13px;">Score deals on fashion brands</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">AbeBooks</p>
+        <p style="font-size: 13px;">Books, art & collectibles</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">ACX</p>
+        <p style="font-size: 13px;">Audiobook Publishing Made Easy</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Sell on Amazon</p>
+        <p style="font-size: 13px;">Start a Selling Account</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Amazon Business</p>
+        <p style="font-size: 13px;">Everything For Your Business</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">AmazonGlobal</p>
+        <p style="font-size: 13px;">Ship Orders Internationally</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Amazon Web Services</p>
+        <p style="font-size: 13px;">Scalable Cloud Computing Services</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Audible</p>
+        <p style="font-size: 13px;">
+          <a href="#" style="color: #ddd; text-decoration: underline;">Listen to Books & Original Audio Performances</a>
+        </p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Box Office Mojo</p>
+        <p style="font-size: 13px;">Find Movie Box Office Data</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Goodreads</p>
+        <p style="font-size: 13px;">Book reviews & recommendations</p>
+      </div>
+
+      <!-- 2nd Row -->
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">IMDb</p>
+        <p style="font-size: 13px;">Movies, TV & Celebrities</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">IMDbPro</p>
+        <p style="font-size: 13px;">Get Info Entertainment Professionals Need</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Kindle Direct Publishing</p>
+        <p style="font-size: 13px;">Indie Digital & Print Publishing Made Easy</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Prime Video Direct</p>
+        <p style="font-size: 13px;">Video Distribution Made Easy</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Shopbop</p>
+        <p style="font-size: 13px;">Designer Fashion Brands</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Woot!</p>
+        <p style="font-size: 13px;">Deals and Shenanigans</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Zappos</p>
+        <p style="font-size: 13px;">Shoes & Clothing</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">eero WiFi</p>
+        <p style="font-size: 13px;">Stream 4K Video in Every Room</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Blink</p>
+        <p style="font-size: 13px;">Smart Security for Every Home</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Neighbors App</p>
+        <p style="font-size: 13px;">Real-Time Crime & Safety Alerts</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Amazon Subscription Boxes</p>
+        <p style="font-size: 13px;">Top subscription boxes – right to your door</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">PillPack</p>
+        <p style="font-size: 13px;">Pharmacy Simplified</p>
+      </div>
+
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Veeqo</p>
+        <p style="font-size: 13px;">Shipping Software Inventory Management</p>
+      </div>
+      <div style="min-width: 120px;">
+        <p style="font-weight: bold; font-size: 14px;">Ring</p>
+        <p style="font-size: 13px;">Smart Home Security Systems</p>
+      </div>
+    </div>
+
+    <!-- Bottom Links -->
+    <div style="text-align: center; font-size: 12px; color: #ccc; margin-top: 40px;">
+      <a href="#" style="margin: 0 10px; color: #ccc; text-decoration: none;">Conditions of Use</a>
+      <a href="#" style="margin: 0 10px; color: #ccc; text-decoration: none;">Privacy Notice</a>
+      <a href="#" style="margin: 0 10px; color: #ccc; text-decoration: none;">Consumer Health Data Privacy
+        Disclosure</a>
+      <a href="#" style="margin: 0 10px; color: #ccc; text-decoration: none;">Your Ads Privacy Choices</a>
+      <div style="margin-top: 10px;">© 1996-2025, Amazon.com, Inc. or its affiliates</div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle JS with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function scrollCarousel(direction) {
+      const carousel = document.getElementById('carousel');
+      const scrollAmount = 240; // Adjust for image width + margin
+      carousel.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+  </script>
+
+  <script>
+    let index = 0;
+    const track = document.getElementById("carousel-track");
+    const totalSlides = track.children.length;
+
+    function moveSlide(step) {
+      index = (index + step + totalSlides) % totalSlides;
+      track.style.transform = `translateX(-${index * 100}%)`;
+    }
+  </script>
+
+  <script>
+    // Carousel functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('#carousel-track > div');
+
+    function moveSlide(direction) {
+      currentSlide = (currentSlide + direction + slides.length) % slides.length;
+      document.getElementById('carousel-track').style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    // Auto-advance slides
+    setInterval(() => moveSlide(1), 5000);
+
+    // Product carousel scroll
+    function scrollCarousel(direction) {
+      const carousel = document.getElementById('carousel');
+      const scrollAmount = 220 * direction * 4; // Scroll 4 items at once
+      carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+
+    // Back to top functionality
+    window.onscroll = function () {
+      const backToTop = document.getElementById('backToTop');
+      if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+        backToTop.style.display = 'block';
+      } else {
+        backToTop.style.display = 'none';
+      }
+    };
+
+    document.getElementById('backToTop').onclick = function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  </script>
+
+</body>
+
+</html>
